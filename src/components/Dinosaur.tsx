@@ -6,9 +6,10 @@ interface DinosaurProps {
   position: Position;
   isAnimating: boolean;
   isClimbing?: boolean;
+  reaction?: string;
 }
 
-const Dinosaur: React.FC<DinosaurProps> = ({ player, position, isAnimating, isClimbing = false }) => {
+const Dinosaur: React.FC<DinosaurProps> = ({ player, position, isAnimating, isClimbing = false, reaction }) => {
   const dinosaurEmojis: { [key: string]: string } = {
     'T-Rex': '🦖',
     'Triceratops': '🦕',
@@ -53,6 +54,28 @@ const Dinosaur: React.FC<DinosaurProps> = ({ player, position, isAnimating, isCl
           animation: 'bounce 0.5s infinite'
         }}>
           🍺
+        </div>
+      )}
+
+      {reaction && (
+        <div className="reaction-bubble" style={{
+          position: 'absolute',
+          top: '-40px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'rgba(255, 255, 255, 0.95)',
+          color: '#333',
+          padding: '4px 8px',
+          borderRadius: '12px',
+          fontSize: '10px',
+          fontWeight: 'bold',
+          whiteSpace: 'nowrap',
+          animation: 'reactionPop 0.8s ease-out',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+          border: '1px solid #ccc',
+          zIndex: 15
+        }}>
+          {reaction}
         </div>
       )}
     </div>
