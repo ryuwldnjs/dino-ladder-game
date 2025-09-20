@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "mcp__ide__getDiagnostics"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
