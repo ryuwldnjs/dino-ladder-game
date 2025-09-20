@@ -452,3 +452,27 @@ button:active:not(:disabled) {
     font-size: 1.9rem;
   }
 }
+
+/* 전역 스크롤 최적화 */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* iOS Safari 최적화 */
+@supports (-webkit-touch-callout: none) {
+  .dinosaur-ladder-game {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+}
