@@ -376,22 +376,61 @@ button:active:not(:disabled) {
 .result-item:nth-child(4) { animation-delay: 0.4s; }
 .result-item:nth-child(5) { animation-delay: 0.5s; }
 
-@media (max-width: 768px) {
+/* 작은 화면 (모바일) 최적화 */
+@media (max-width: 480px) {
+  .dinosaur-ladder-game {
+    padding: 5px;
+  }
+
   .controls {
-    flex-direction: column;
-    gap: 15px;
+    gap: 8px;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .input-group {
+    min-width: 80px;
+  }
+
+  .input-group label {
+    font-size: 0.7rem;
+  }
+
+  .input-group select {
+    padding: 8px 6px;
+    font-size: 0.8rem;
+    min-width: 70px;
+  }
+
+  button {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    min-height: 40px;
   }
 
   .game-header h1 {
-    font-size: 2rem;
+    font-size: 1.6rem;
+    margin-bottom: 10px;
   }
 
-  .ladder-container {
-    transform: scale(0.8);
+  .results {
+    margin-top: 15px;
+    padding: 12px;
   }
 
-  .ladder-container:hover {
-    transform: scale(0.8) translateY(-1px);
+  .results h2 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+
+  .result-item {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .result-item .dinosaur-icon {
+    font-size: 1.3rem;
   }
 
   .celebration-particle {
@@ -399,6 +438,17 @@ button:active:not(:disabled) {
   }
 
   .game-start-effect {
-    font-size: 2rem;
+    font-size: 1.5rem;
+  }
+}
+
+/* 중간 화면 (태블릿) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .controls {
+    gap: 12px;
+  }
+
+  .game-header h1 {
+    font-size: 1.9rem;
   }
 }
