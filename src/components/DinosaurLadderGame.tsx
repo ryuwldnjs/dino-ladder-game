@@ -231,7 +231,7 @@ const DinosaurLadderGame: React.FC = () => {
         )}
 
         {gameState.gameFinished && (
-          <div className="results">
+          <div className="results fade-in">
             <h2>🎉 게임 결과 🎉</h2>
             <div className="result-list">
               {gameState.players.map((player, i) => (
