@@ -24,12 +24,12 @@ const Dinosaur: React.FC<DinosaurProps> = ({ player, position, isAnimating, isCl
         position: 'absolute',
         left: position.x,
         top: position.y,
-        fontSize: '24px',
+        fontSize: '36px',
         transition: isAnimating ? 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
         zIndex: 10,
         textAlign: 'center',
-        width: '32px',
-        height: '32px',
+        width: '48px',
+        height: '48px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
@@ -52,7 +52,7 @@ const Dinosaur: React.FC<DinosaurProps> = ({ player, position, isAnimating, isCl
           opacity: 0.7,
           animation: 'bounce 0.5s infinite'
         }}>
-          💨
+          🍺
         </div>
       )}
     </div>

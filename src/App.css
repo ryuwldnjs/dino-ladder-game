@@ -149,17 +149,75 @@ button:disabled {
 .result-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 15px;
+  gap: 12px;
+  padding: 15px;
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 1rem;
   font-weight: bold;
   animation: slideInUp 0.5s ease-out;
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .result-item .dinosaur-icon {
-  font-size: 1.5rem;
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.result-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.player-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.punishment {
+  font-size: 0.9rem;
+  color: #ffeb3b;
+  font-weight: normal;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* 이름 입력 섹션 */
+.name-input-section {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 15px;
+  margin: 15px 0;
+  backdrop-filter: blur(10px);
+}
+
+.name-input-section h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.name-input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  box-sizing: border-box;
+}
+
+.name-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 0 2px #ff6b6b;
 }
 
 @keyframes slideInUp {
@@ -430,7 +488,25 @@ button:active:not(:disabled) {
   }
 
   .result-item .dinosaur-icon {
-    font-size: 1.3rem;
+    font-size: 1.8rem;
+  }
+
+  .player-name {
+    font-size: 1rem;
+  }
+
+  .punishment {
+    font-size: 0.8rem;
+    padding: 3px 6px;
+  }
+
+  .name-input-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .name-input {
+    padding: 8px 10px;
+    font-size: 0.9rem;
   }
 
   .celebration-particle {

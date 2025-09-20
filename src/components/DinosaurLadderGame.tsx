@@ -15,6 +15,8 @@ const DinosaurLadderGame: React.FC = () => {
   });
 
   const [playerCount, setPlayerCount] = useState(4);
+  const [playerNames, setPlayerNames] = useState<string[]>([]);
+  const [showNameInput, setShowNameInput] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [dinosaurPositions, setDinosaurPositions] = useState<Position[]>([]);
   const [climbingPaths, setClimbingPaths] = useState<number[][]>([]);
@@ -32,13 +34,24 @@ const DinosaurLadderGame: React.FC = () => {
 
   const { cellWidth, cellHeight } = getCellDimensions();
 
+  const drinkingPunishments = [
+    '🍺 맥주 1잔 원샷!',
+    '🥃 소주 1잔 원샷!',
+    '🍷 와인 1잔 원샷!',
+    '🥂 건배사 하며 2잔!',
+    '🎉 자유! (면제)',
+    '🎪 춤추며 1잔!',
+    '🎭 개인기 후 1잔!',
+    '💘 러브샷 상대 지목!'
+  ];
+
   const dinosaurTypes = ['T-Rex', 'Triceratops', 'Stegosaurus', 'Velociraptor', 'Brontosaurus'];
   const colors = ['0deg', '60deg', '120deg', '180deg', '240deg'];
 
   const initializePlayers = useCallback(() => {
     const players: Player[] = Array.from({ length: playerCount }, (_, i) => ({
       id: i,
-      name: `공룡 ${i + 1}`,
+      name: playerNames[i] || `${dinosaurTypes[i % dinosaurTypes.length]}`,
       dinosaur: dinosaurTypes[i % dinosaurTypes.length],
       color: colors[i % colors.length]
     }));
@@ -56,11 +69,11 @@ const DinosaurLadderGame: React.FC = () => {
 
     const { cellWidth: currentCellWidth } = getCellDimensions();
     const initialPositions: Position[] = players.map((_, i) => ({
-      x: i * currentCellWidth + currentCellWidth / 2 - 16,
-      y: 10
+      x: i * currentCellWidth + currentCellWidth / 2 - 24,
+      y: 5
     }));
     setDinosaurPositions(initialPositions);
-  }, [playerCount, gameState.ladderHeight]);
+  }, [playerCount, gameState.ladderHeight, playerNames]);
 
   const startGame = useCallback(() => {
     if (gameState.players.length === 0) return;
@@ -92,13 +105,13 @@ const DinosaurLadderGame: React.FC = () => {
         });
         setIsAnimating(false);
 
-        // 승리 파티클 효과 생성
+        // 파티 파티클 효과 생성
         const particles = [];
-        const emojis = ['🎉', '✨', '🌟', '💫', '🎊', '🔥'];
-        for (let i = 0; i < 20; i++) {
+        const partyParticles = ['🍻', '🎉', '🥳', '🍺', '🥃', '🍷', '🥂', '✨'];
+        for (let i = 0; i < 25; i++) {
           particles.push({
             id: i,
-            emoji: emojis[Math.floor(Math.random() * emojis.length)],
+            emoji: partyParticles[Math.floor(Math.random() * partyParticles.length)],
             x: Math.random() * window.innerWidth,
             y: window.innerHeight
           });
@@ -115,8 +128,8 @@ const DinosaurLadderGame: React.FC = () => {
       // 현재 단계의 위치로 공룡들 이동
       const { cellWidth: currentCellWidth, cellHeight: currentCellHeight } = getCellDimensions();
       const currentPositions: Position[] = gameState.players.map((_, i) => ({
-        x: paths[i][step] * currentCellWidth + currentCellWidth / 2 - 16,
-        y: step * currentCellHeight + 10
+        x: paths[i][step] * currentCellWidth + currentCellWidth / 2 - 24,
+        y: step * currentCellHeight + 5
       }));
       setDinosaurPositions(currentPositions);
 
@@ -154,7 +167,7 @@ const DinosaurLadderGame: React.FC = () => {
   return (
     <div className="dinosaur-ladder-game">
       <div className="game-header">
-        <h1>🦖 공룡 사다리타기 게임 🦕</h1>
+        <h1>🦖 공룡 술게임 사다리타기 🍻</h1>
 
         <div className="controls">
           <div className="input-group">
@@ -186,6 +199,10 @@ const DinosaurLadderGame: React.FC = () => {
             </select>
           </div>
 
+          <button onClick={() => setShowNameInput(!showNameInput)} disabled={gameState.gameStarted}>
+            이름 입력
+          </button>
+
           <button onClick={initializePlayers} disabled={gameState.gameStarted}>
             새 사다리 생성
           </button>
@@ -194,13 +211,34 @@ const DinosaurLadderGame: React.FC = () => {
             onClick={startGame}
             disabled={gameState.gameStarted || gameState.players.length === 0}
           >
-            게임 시작!
+            🍻 시작!
           </button>
 
           <button onClick={resetGame}>
-            초기화
+            다시하기
           </button>
         </div>
+
+        {/* 이름 입력 섹션 */}
+        {showNameInput && (
+          <div className="name-input-section fade-in">
+            <h3>플레이어 이름 입력</h3>
+            {Array.from({ length: playerCount }, (_, i) => (
+              <input
+                key={i}
+                type="text"
+                placeholder={`${dinosaurTypes[i % dinosaurTypes.length]} 이름`}
+                value={playerNames[i] || ''}
+                onChange={(e) => {
+                  const newNames = [...playerNames];
+                  newNames[i] = e.target.value;
+                  setPlayerNames(newNames);
+                }}
+                className="name-input"
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="game-area">
@@ -243,22 +281,26 @@ const DinosaurLadderGame: React.FC = () => {
 
         {gameState.gameFinished && (
           <div className="results fade-in">
-            <h2>🎉 게임 결과 🎉</h2>
+            <h2>🍻 술게임 결과 🎉</h2>
             <div className="result-list">
-              {gameState.players.map((player, i) => (
-                <div key={player.id} className="result-item">
-                  <span className="dinosaur-icon">
-                    {player.dinosaur === 'T-Rex' && '🦖'}
-                    {player.dinosaur === 'Triceratops' && '🦕'}
-                    {player.dinosaur === 'Stegosaurus' && '🦴'}
-                    {player.dinosaur === 'Velociraptor' && '🐉'}
-                    {player.dinosaur === 'Brontosaurus' && '🐲'}
-                  </span>
-                  <span>{player.name}</span>
-                  <span>→</span>
-                  <span>위치 {gameState.results[i] + 1}</span>
-                </div>
-              ))}
+              {gameState.players.map((player, i) => {
+                const punishment = drinkingPunishments[gameState.results[i] % drinkingPunishments.length];
+                return (
+                  <div key={player.id} className="result-item">
+                    <span className="dinosaur-icon">
+                      {player.dinosaur === 'T-Rex' && '🦖'}
+                      {player.dinosaur === 'Triceratops' && '🦕'}
+                      {player.dinosaur === 'Stegosaurus' && '🦴'}
+                      {player.dinosaur === 'Velociraptor' && '🐉'}
+                      {player.dinosaur === 'Brontosaurus' && '🐲'}
+                    </span>
+                    <div className="result-info">
+                      <div className="player-name">{player.name}</div>
+                      <div className="punishment">{punishment}</div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
@@ -266,7 +308,7 @@ const DinosaurLadderGame: React.FC = () => {
         {/* 게임 시작 효과 */}
         {showStartEffect && (
           <div className="game-start-effect fade-in">
-            🦖 사다리타기 시작! 🦕
+            🦖 공룡들이 술을 마시러 간다! 🍻
           </div>
         )}
 
