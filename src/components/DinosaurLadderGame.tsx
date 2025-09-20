@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import type { Player, GameState, Position } from '../types/Game';
-import { generateValidLadder, tracePath, getDetailedPath } from '../utils/ladderGenerator';
+import { generateValidLadder, getDetailedPath } from '../utils/ladderGenerator';
 import Dinosaur from './Dinosaur';
 import LadderCanvas from './LadderCanvas';
 
@@ -22,8 +22,15 @@ const DinosaurLadderGame: React.FC = () => {
   const [showStartEffect, setShowStartEffect] = useState(false);
   const [celebrationParticles, setCelebrationParticles] = useState<Array<{id: number, emoji: string, x: number, y: number}>>([]);
 
-  const cellWidth = 100;
-  const cellHeight = 60;
+  const getCellDimensions = () => {
+    const screenWidth = window.innerWidth;
+    const maxWidth = Math.min(screenWidth - 40, 400); // 모바일 최적화
+    const cellWidth = Math.max(60, maxWidth / playerCount); // 최소 60px
+    const cellHeight = Math.max(40, cellWidth * 0.6); // 비율 유지
+    return { cellWidth, cellHeight };
+  };
+
+  const { cellWidth, cellHeight } = getCellDimensions();
 
   const dinosaurTypes = ['T-Rex', 'Triceratops', 'Stegosaurus', 'Velociraptor', 'Brontosaurus'];
   const colors = ['0deg', '60deg', '120deg', '180deg', '240deg'];
@@ -47,8 +54,9 @@ const DinosaurLadderGame: React.FC = () => {
       results: []
     });
 
+    const { cellWidth: currentCellWidth } = getCellDimensions();
     const initialPositions: Position[] = players.map((_, i) => ({
-      x: i * cellWidth + cellWidth / 2 - 20,
+      x: i * currentCellWidth + currentCellWidth / 2 - 16,
       y: 10
     }));
     setDinosaurPositions(initialPositions);
@@ -105,9 +113,10 @@ const DinosaurLadderGame: React.FC = () => {
       setCurrentStep(step);
 
       // 현재 단계의 위치로 공룡들 이동
+      const { cellWidth: currentCellWidth, cellHeight: currentCellHeight } = getCellDimensions();
       const currentPositions: Position[] = gameState.players.map((_, i) => ({
-        x: paths[i][step] * cellWidth + cellWidth / 2 - 20,
-        y: step * cellHeight + 10
+        x: paths[i][step] * currentCellWidth + currentCellWidth / 2 - 16,
+        y: step * currentCellHeight + 10
       }));
       setDinosaurPositions(currentPositions);
 
@@ -202,10 +211,12 @@ const DinosaurLadderGame: React.FC = () => {
               position: 'relative',
               width: playerCount * cellWidth,
               height: gameState.ladderHeight * cellHeight,
-              margin: '20px auto',
+              margin: '10px auto',
               border: '2px solid #8B4513',
               borderRadius: '10px',
-              background: 'linear-gradient(180deg, #87CEEB 0%, #98FB98 100%)'
+              background: 'linear-gradient(180deg, #87CEEB 0%, #98FB98 100%)',
+              maxWidth: '95vw',
+              overflow: 'hidden'
             }}
           >
             <LadderCanvas
